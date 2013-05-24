@@ -34,7 +34,7 @@ Windows下ANT用到的环境变量主要有2个，`ANT_HOME` 、`PATH`。
 ###配置需要打包的工程
 初始化工作：（一般只需要操作初始化一次就够了）
 
-1. 运行`andorid update project -p <你的工程目录>`可以自动生成ant 打包所需的 build.xml (包括依赖lib工程也需要执行一次)
+1. 运行`android update project -p <你的工程目录>`可以自动生成ant 打包所需的 build.xml (包括依赖lib工程也需要执行一次)
 
 2. 修改ant.properties中签名文件的路径和密码(如果没有请自行添加)
     key.store=D:\\android\\mykeystore
