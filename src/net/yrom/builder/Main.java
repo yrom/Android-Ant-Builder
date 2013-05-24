@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package net.yrom.builder;
 
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 
 import net.yrom.builder.util.ManifestParser;
+
 /*
  * implementation of http://blog.csdn.net/t12x3456/article/details/7957117
  */
@@ -35,26 +37,25 @@ public class Main {
     /**
      * 项目路径
      */
-    private static String PROJECT_BASE_PATH;
+    private static String   PROJECT_BASE_PATH;
     /**
      * apk保存路径
      */
-    private static String APK_SAVE_PATH;
+    private static String   APK_SAVE_PATH;
     /**
      * 生成的apk名称
      */
-    private static String APK_FILE_NAME;
+    private static String   APK_FILE_NAME;
     /**
      * 重命名apk的前缀
      */
-    private static String RENAME_PREFIX;
-    private static String VERSION_NAME;
-    private static int    VERSION_CODE;
+    private static String   RENAME_PREFIX;
+    private static String   VERSION_NAME;
+    private static int      VERSION_CODE;
     /**
-     * 统计渠道 umeng、baidu
-     * (TODO 支持多个渠道)
+     * 统计渠道 umeng、baidu (TODO 支持多个渠道)
      */
-    private static String CHANNEL_NAME;
+    private static String   CHANNEL_NAME;
     /**
      * 渠道数组(TODO)
      */
@@ -94,14 +95,16 @@ public class Main {
             startTime = System.currentTimeMillis();
             date.setTimeInMillis(startTime);
             System.out.println("开始时间为:" + sdf.format(date.getTime()));
-            
+
             ManifestParser parser = new ManifestParser(manifestFile.getAbsolutePath());
             parser.newVersionInfo(VERSION_CODE, VERSION_NAME);
-            //TODO 用CHANNEL_VALUES替代
+            if(VERSION_CODE == 0) VERSION_CODE = Integer.parseInt(parser.getVersionCode());
+            // TODO 用CHANNEL_VALUES替代
             BufferedReader br = new BufferedReader(new FileReader("market.txt"));
             String flag = null;
             while ((flag = br.readLine()) != null) {
-                if(flag.contains("#")) continue;
+                if (flag.contains("#"))
+                    continue;
                 // 先修改manifest文件:读取临时文件中的占位符修改为市场标识,然后写入manifest.xml中
                 parser.replaceMetaData(CHANNEL_NAME, flag);
                 parser.write();
@@ -111,7 +114,7 @@ public class Main {
                 builder.runTarget("release");
                 // 打完包后执行重命名加拷贝操作
                 File apk = new File(PROJECT_BASE_PATH + File.separator + "bin" + File.separator + APK_FILE_NAME);// bin目录下签名的apk文件
-                File releaseFile = new File(saveFolder, File.separator+ RENAME_PREFIX + flag + ".apk");
+                File releaseFile = new File(saveFolder, RENAME_PREFIX + flag + "_" + VERSION_CODE + ".apk");
                 FileUtils.copyFile(apk, releaseFile);
                 System.out.println("file ------>" + apk.getAbsolutePath());
                 System.out.println("rename------>" + releaseFile.getAbsolutePath());
@@ -122,7 +125,7 @@ public class Main {
             System.out.println("结束时间为:" + sdf.format(date.getTime()));
             totalTime = endTime - startTime;
             System.out.println("耗费时间为:" + getConsumedDate(totalTime));
-    
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("---------ant批量自动化打包中发生异常----------");

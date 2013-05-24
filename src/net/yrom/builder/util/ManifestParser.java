@@ -16,12 +16,10 @@
 package net.yrom.builder.util;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.commons.io.CopyUtils;
 import org.apache.commons.io.FileUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -138,24 +136,4 @@ public class ManifestParser {
         writer.close();
     }
 
-    /**
-     * test
-     * 
-     * @param args
-     */
-    public static void main(String[] args) {
-        String file = "D:\\Documents\\GitHub\\acfunm\\AndroidManifest.xml";
-        try {
-            ManifestParser parser = new ManifestParser(file);
-            System.out.println("old version=" + parser.getVersionCode());
-            parser.replaceMetaData("UMENG_CHANNEL", "Xiaomi");
-            parser.replaceMetaData("BAIDU_CHANNEL", "Baidu");
-            parser.newVersionInfo(100, "1.0.0");
-            // System.out.println(parser.getXml());
-            parser.write();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
