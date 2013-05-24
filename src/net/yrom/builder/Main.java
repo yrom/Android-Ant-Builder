@@ -114,7 +114,7 @@ public class Main {
                 builder.runTarget("release");
                 // 打完包后执行重命名加拷贝操作
                 File apk = new File(PROJECT_BASE_PATH + File.separator + "bin" + File.separator + APK_FILE_NAME);// bin目录下签名的apk文件
-                File releaseFile = new File(saveFolder, RENAME_PREFIX + flag + "_" + VERSION_CODE + ".apk");
+                File releaseFile = new File(saveFolder, RENAME_PREFIX + VERSION_CODE + "_" + flag + ".apk");
                 FileUtils.copyFile(apk, releaseFile);
                 System.out.println("file ------>" + apk.getAbsolutePath());
                 System.out.println("rename------>" + releaseFile.getAbsolutePath());

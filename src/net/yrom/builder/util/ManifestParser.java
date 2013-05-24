@@ -104,19 +104,21 @@ public class ManifestParser {
      */
     public void replaceMetaData(String name, String value, boolean add) {
         Iterator<Element> iterator = application.elementIterator("meta-data");
+        boolean hasData = false;
         for (; iterator.hasNext();) {
 
             Element data = iterator.next();
             String nameValue = data.attributeValue(androidName);
             if (nameValue != null && nameValue.equals(name)) {
                 Attribute attribute = data.attribute(androidValue);
-                if (attribute != null && !attribute.getValue().equals(value)) {
+                hasData = attribute.getValue().equals(value);
+                if (attribute != null && !hasData) {
                     attribute.setValue(value);
                     return;
                 }
             }
         }
-        if (add)
+        if (add && !hasData)
             application.addElement("meta-data")
                     .addAttribute(androidName, name)
                     .addAttribute(androidValue, value);
