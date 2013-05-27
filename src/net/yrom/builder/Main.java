@@ -119,6 +119,7 @@ public class Main {
                 System.out.println("file ------>" + apk.getAbsolutePath());
                 System.out.println("rename------>" + releaseFile.getAbsolutePath());
             }
+            br.close();
             System.out.println("---------ant批量自动化打包结束----------");
             endTime = System.currentTimeMillis();
             date.setTimeInMillis(endTime);
